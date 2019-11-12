@@ -3,10 +3,18 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Prelude.fs" />
+    <Compile Include="components\InfiniteScroll.fs" />
+    <Compile Include="modules\Article.fs" />
+    <Compile Include="data\NewsApi.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fable.Core" Version="3.0.0" />
     <PackageReference Include="Fable.Elmish.React" Version="3.0.1" />
+    <PackageReference Include="Fable.Promise" Version="2.0.0" />
+    <PackageReference Include="Fable.Fetch" Version="2.0.0" />
+    <PackageReference Include="Fable.Browser.Dom" Version="1.0.0" />
+    <PackageReference Include="Thoth.Json" Version="3.3.0" />
   </ItemGroup>
 </Project>

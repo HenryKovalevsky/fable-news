@@ -1,8 +1,55 @@
 *,
 *:before,
 *:after {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, rgba(249, 248, 248, 1) 0%, rgba(246, 247, 252, 1) 47%, rgba(236, 237, 248, 1) 100%);
+}
+
+hr {
+  margin-bottom: 20px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.link {
+  color: cornflowerblue;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.main {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.article {
+  margin-bottom: 68px;
+}
+
+.article .article__img {
+  width: 100%;
+}
+
+.article .article__title {
+  font-weight: bold;
+  color: black;
+}
+
+.article .article__text {
+  color: black;
+}
+
+.article .article__meta {
+  font-size: 14px;
+  color: grey;
 }

@@ -1,61 +1,66 @@
 module App
 
-(**
-Minimal application showing how to use Elmish
-You can find more info about Emish architecture and samples at https://elmish.github.io/
-*)
+open App.Modules
+open App.Data
 
-open Fable.Core.JsInterop
-open Fable.React
-open Fable.React.Props
 open Elmish
-open Elmish.React
 
 // MODEL
 
-type Model =
-    { Value : string }
+type Model = Article list
+
+type PageNumber = int
+type ErrorMessage = string
 
 type Msg =
-    | ChangeValue of string
+  | LoadData of PageNumber
+  | DataLoaded of Article list
+  | FetchFail of ErrorMessage
 
-let init () = { Value = "Hello!" }
+let init() = [], Cmd.none
 
 // UPDATE
 
-let update (msg : Msg) (_ : Model) =
+let update msg model =
   match msg with
-  | ChangeValue newValue ->
-      { Value = newValue }
+  | LoadData page -> 
+      model, Cmd.OfPromise.either 
+        NewsApi.fetchNews page 
+        (DataLoaded << id) 
+        (FetchFail << fun exc -> exc.Message)
+  | DataLoaded data ->
+      model @ data, Cmd.none
+  | FetchFail error ->
+      printfn "Fetch failed — %s" error
+      model, Cmd.none
+
 
 // VIEW (rendered with React)
 
-let mainContainerStyle = 
-  [ Display DisplayOptions.Flex
-    JustifyContent AlignContentOptions.Center
-    AlignItems AlignItemsOptions.Center 
-    FlexDirection "column"
-    Width "100vw" 
-    Height "100vh" ]
+open Elmish.React
+open Fable.React
+open Fable.React.Props
 
-let inputStyle =
-  [ Padding ".25rem"
-    FontSize "16px"
-    Width "250px"
-    Margin "1rem" ]
+open App.Components.InfiniteScroll
+open App.Modules.Article
 
-let view model dispatch =
-    main [ Style mainContainerStyle ]
-        [ input [ Style inputStyle
-                  Value model.Value
-                  OnChange (fun ev -> ev.target?value |> string |> ChangeValue |> dispatch) ]
-          span [ ]
-            [ str " — "
-              str model.Value
-              str " — " ] ]
+let view (model : Model) dispatch =
+  main [ Class "main"] [
+    header [ Class "header" ] [
+      h1 [] [ str "Fable News" ]
+      div [] [
+        span [] [ str "Powered by " ] 
+        a [ Href "https://newsapi.org"; Target "_blank"; Class "link" ] [ str "News API" ]
+      ]
+    ]
+    hr []
+    infiniteScroll [ LoadMore (dispatch << LoadData << int); HasMore (Some true); ] [
+      div [] (List.map article model)
+    ] 
+  ]
 
 // App
-Program.mkSimple init update view
+Program.mkProgram init update view
 |> Program.withReactSynchronous "elmish-app"
 |> Program.withConsoleTrace
 |> Program.run
