@@ -9,6 +9,13 @@ An infinite news feed implemented with [Fable](https://fable.io) ([F#](https://f
 - User can save favorite articles; _(TODO)_
 - User can see saved articles in a separate route. _(TODO)_
 
+## Prerequisites
+
+In order to use Fable you will need the following tools:
+
+- [.NET Core SDK](https://dotnet.microsoft.com/) to work with F# files and dependencies;
+- [Node.js](https://nodejs.org/) to execute JS code.
+
 ## How to use
 
 - `npm ci` — install dependencies;
